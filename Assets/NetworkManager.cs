@@ -19,14 +19,35 @@ public class NetworkManager : MonoBehaviour {
 
     void Start() {
         PhotonNetwork.player.name = PlayerPrefs.GetString("Username", "Matt");
-        chatBox = GetComponentInChildren<Text>();
-        Debug.Log(chatBox.fontSize + ", " + chatBox.minHeight + ", " + chatBox.flexibleHeight + ", " + chatBox.preferredHeight);
         chatMessages = new List<string>();
+
+        // There's got to be a better way than this...
+        Text[] texts = GetComponentsInChildren<Text>(includeInactive: true);
+        foreach (Text text in texts) {
+            if (text.name == "ChatBox")
+                chatBox = text;
+            else if (text.name == "ChatInput")
+                chatInput = text;
+        }
+
+        Debug.Log(chatBox.fontSize + ", " + chatBox.minHeight + ", " + chatBox.flexibleHeight + ", " + chatBox.preferredHeight);
 
         Connect();
     }
 
     void Update() {
+        if (Input.GetButtonDown("Submit")) {
+            if (chatInput.enabled) {
+                DisableChatInput();
+            } else {
+                EnableChatInput();
+            }
+        }
+
+        if (chatInput.enabled) {
+            AddTextToChatInput();
+        }
+
         /*
         if (PhotonNetwork.connectedAndReady) {
             AddChatMessage(Time.deltaTime.ToString());
@@ -62,7 +83,43 @@ public class NetworkManager : MonoBehaviour {
         AddChatMessage("OnJoinedRoom!");
     }
 
+    void EnableChatInput() {
+        chatInput.enabled = true;
+    }
+
+    void DisableChatInput() {
+        // Remove the "cursor"
+        chatInput.text = chatInput.text.Substring(0, chatInput.text.Length - 1);
+
+        // Send the chat over the network
+        AddChatMessage(chatInput.text);
+
+        chatInput.text = "_";
+        chatInput.enabled = false;
+    }
+
+    void AddTextToChatInput() {
+        if (chatInput.text.Length > chatInputMaxLength)
+            return;
+
+        // Remove the "cursor"
+        chatInput.text = chatInput.text.Substring(0, chatInput.text.Length - 1);
+
+        foreach (char c in Input.inputString) {
+            if (c == '\b' && chatInput.text.Length != 0) {
+                chatInput.text = chatInput.text.Substring(0, chatInput.text.Length - 1);
+            } else {
+                chatInput.text += c;
+            }
+        }
+
+        // Add the "cursor" back
+        chatInput.text += "_";
+    }
+
     const int maxChatMessages = 10;
+    const int chatInputMaxLength = 30;
     List<string> chatMessages;
     Text chatBox;
+    Text chatInput;
 }
