@@ -50,7 +50,7 @@ public class NetworkManager : MonoBehaviour {
 
     void OnJoinedRoom() {
         Debug.Log("OnJoinedRoom");
-        AddChatMessage("OnJoinedRoom!");
+        AddChatMessage("[SYSTEM] OnJoinedRoom!");
     }
 
     const int maxChatMessages = 7;

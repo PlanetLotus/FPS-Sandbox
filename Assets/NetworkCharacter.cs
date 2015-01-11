@@ -41,6 +41,7 @@ public class NetworkCharacter : MonoBehaviour {
     }
 
     void OnGUI() {
+        // TODO: Only do this if ChatMessages has changed recently
         chatBox.text = "";
         foreach (string message in networkManager.ChatMessages) {
             chatBox.text += message + "\n";
@@ -50,6 +51,11 @@ public class NetworkCharacter : MonoBehaviour {
     void EnableChatInput() {
         chatInputBackground.enabled = true;
         chatInput.enabled = true;
+
+        // TODO: Turn off character motor while chat is open.
+        // Couldn't figure out how to do this...don't see a way to disable here.
+        // Might have to write own PlayerController script as done in FPS Tutorial, or download a C# version of it.
+        //GetComponent("CharacterMotor").
     }
 
     void DisableChatInput() {
@@ -59,7 +65,8 @@ public class NetworkCharacter : MonoBehaviour {
             chatInput.text = chatInput.text.Substring(0, chatInput.text.Length - 1);
 
             // Send the chat over the network
-            networkManager.AddChatMessage(chatInput.text);
+            // TODO: Get this player's name to send along with the text
+            networkManager.AddChatMessage("[TestPlayer] " + chatInput.text);
         }
 
         chatInput.text = "_";
