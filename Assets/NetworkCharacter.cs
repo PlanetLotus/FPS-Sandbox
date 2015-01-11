@@ -13,12 +13,15 @@ public class NetworkCharacter : MonoBehaviour {
         networkManager = GameObject.FindObjectOfType<NetworkManager>();
 
         // There's got to be a better way than this...
-        Text[] texts = GetComponentsInChildren<Text>(includeInactive: true);
-        foreach (Text text in texts) {
-            if (text.name == "ChatBox")
-                chatBox = text;
-            else if (text.name == "ChatInput")
-                chatInput = text;
+        Image[] backgrounds = GetComponentsInChildren<Image>(includeInactive: true);
+        foreach (Image background in backgrounds) {
+            if (background.name == "ChatBoxBackground") {
+                chatBoxBackground = background;
+                chatBox = background.GetComponentInChildren<Text>();
+            } else if (background.name == "ChatInputBackground") {
+                chatInputBackground = background;
+                chatInput = background.GetComponentInChildren<Text>();
+            }
         }
     }
 
@@ -45,6 +48,7 @@ public class NetworkCharacter : MonoBehaviour {
     }
 
     void EnableChatInput() {
+        chatInputBackground.enabled = true;
         chatInput.enabled = true;
     }
 
@@ -59,6 +63,7 @@ public class NetworkCharacter : MonoBehaviour {
         }
 
         chatInput.text = "_";
+        chatInputBackground.enabled = false;
         chatInput.enabled = false;
     }
 
@@ -83,6 +88,8 @@ public class NetworkCharacter : MonoBehaviour {
 
     const int chatInputMaxLength = 30;
     Text chatInput;
+    Image chatInputBackground;
     Text chatBox;
+    Image chatBoxBackground;
     NetworkManager networkManager;
 }
