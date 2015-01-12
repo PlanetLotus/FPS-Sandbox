@@ -2,13 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-/// <summary>
-/// Responsible for actually moving a character.
-/// For local characters, we read things like "direction" and "isJumping" and then affect the character controller.
-/// For remote characters, we skip that and simply update the raw transform position based on info we received over the network.
-/// </summary>
-public class NetworkCharacter : MonoBehaviour {
-    // Use this for initialization
+public class HUD : MonoBehaviour {
     void Start() {
         networkManager = GameObject.FindObjectOfType<NetworkManager>();
 
@@ -25,7 +19,6 @@ public class NetworkCharacter : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
     void Update() {
         if (Input.GetButtonDown("Submit")) {
             if (chatInput.enabled) {
