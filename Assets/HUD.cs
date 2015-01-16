@@ -29,7 +29,7 @@ public class HUD : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetButtonDown("Submit")) {
+        if (Input.GetKeyDown(KeyCode.Return)) {
             if (chatInput.enabled) {
                 DisableChatInput();
             } else {
