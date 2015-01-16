@@ -9,14 +9,23 @@ public class HUD : MonoBehaviour {
         // There's got to be a better way than this...
         Image[] backgrounds = GetComponentsInChildren<Image>(includeInactive: true);
         foreach (Image background in backgrounds) {
-            if (background.name == "ChatBoxBackground") {
+            if (background.name == "ChatBoxBackground")
                 chatBoxBackground = background;
-                chatBox = background.GetComponentInChildren<Text>();
-            } else if (background.name == "ChatInputBackground") {
+            else if (background.name == "ChatInputBackground")
                 chatInputBackground = background;
-                chatInput = background.GetComponentInChildren<Text>();
-            }
         }
+
+        Text[] texts = GetComponentsInChildren<Text>(includeInactive: true);
+        foreach (Text text in texts) {
+            if (text.name == "ChatBox")
+                chatBox = text;
+            else if (text.name == "ChatInput")
+                chatInput = text;
+            else if (text.name == "Health")
+                healthIndicator = text;
+        }
+
+        playerHealth = GetComponentInParent<Health>();
     }
 
     void Update() {
@@ -39,6 +48,8 @@ public class HUD : MonoBehaviour {
         foreach (string message in networkManager.ChatMessages) {
             chatBox.text += message + "\n";
         }
+
+        healthIndicator.text = "Health: " + playerHealth.CurrentHitPoints;
     }
 
     void EnableChatInput() {
@@ -53,7 +64,7 @@ public class HUD : MonoBehaviour {
 
     void DisableChatInput() {
         // If there's anything in the chatbox other than the cursor (and return character), send it
-        if (chatInput.text.Length > 2) {
+        if (chatInput.text.Trim().Length > 2) {
             // Remove the "cursor"
             chatInput.text = chatInput.text.Substring(0, chatInput.text.Length - 1);
 
@@ -91,5 +102,7 @@ public class HUD : MonoBehaviour {
     Image chatInputBackground;
     Text chatBox;
     Image chatBoxBackground;
+    Text healthIndicator;
     NetworkManager networkManager;
+    Health playerHealth;
 }
