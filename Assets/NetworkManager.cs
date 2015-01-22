@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class NetworkManager : MonoBehaviour {
     public List<string> ChatMessages;
     public bool IsOfflineMode;
+    public GameObject playerControllerPrefab;
 
     public void AddChatMessage(string message) {
         PhotonView.Get(this).RPC("AddChatMessageRPC", PhotonTargets.All, message);
@@ -29,12 +30,6 @@ public class NetworkManager : MonoBehaviour {
         } else {
             Connect();
         }
-
-        if (PhotonNetwork.connected) {
-            SpawnPlayer();
-        } else {
-            Debug.LogError("Not connected to network, but should be! Can't spawn player.");
-        }
     }
 
     void Update() {
@@ -45,7 +40,6 @@ public class NetworkManager : MonoBehaviour {
     }
 
     void OnGUI() {
-        GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
     }
 
     void OnJoinedLobby() {
@@ -61,14 +55,14 @@ public class NetworkManager : MonoBehaviour {
     void OnJoinedRoom() {
         Debug.Log("OnJoinedRoom");
         AddChatMessage("[SYSTEM] OnJoinedRoom!");
+        SpawnPlayer();
     }
 
     void SpawnPlayer() {
         AddChatMessage("[SYSTEM] Spawning Player: " + PhotonNetwork.player.name);
 
-        GameObject player = PhotonNetwork.Instantiate(playerControllerPrefabName, Vector3.zero, Quaternion.identity, 0);
+        GameObject player = PhotonNetwork.Instantiate(playerControllerPrefab.name, Vector3.zero, Quaternion.identity, 0);
     }
 
     const int maxChatMessages = 7;
-    const string playerControllerPrefabName = "PlayerController";
 }
