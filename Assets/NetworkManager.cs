@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class NetworkManager : MonoBehaviour {
     public List<string> ChatMessages;
+    public bool IsOfflineMode;
 
     // Goal #1: Create a reasonable chat system using the NEW UI System
     public void AddChatMessage(string message) {
@@ -23,7 +24,12 @@ public class NetworkManager : MonoBehaviour {
         PhotonNetwork.player.name = PlayerPrefs.GetString("Username", "Matt");
         ChatMessages = new List<string>();
 
-        Connect();
+        if (IsOfflineMode) {
+            PhotonNetwork.offlineMode = true;
+            OnJoinedLobby();
+        } else {
+            Connect();
+        }
     }
 
     void Update() {
