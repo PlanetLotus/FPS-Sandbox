@@ -59,9 +59,11 @@ public class NetworkManager : MonoBehaviour {
     }
 
     void SpawnPlayer() {
-        AddChatMessage("[SYSTEM] Spawning Player: " + PhotonNetwork.player.name);
+        AddChatMessage("[SYSTEM] Spawning Player: " + PhotonNetwork.player.ID);
 
         GameObject player = PhotonNetwork.Instantiate(playerControllerPrefab.name, Vector3.zero, Quaternion.identity, 0);
+        ((MonoBehaviour)player.GetComponent("MouseLook")).enabled = true;
+        ((MonoBehaviour)player.GetComponent("PlayerController")).enabled = true;
     }
 
     const int maxChatMessages = 7;
