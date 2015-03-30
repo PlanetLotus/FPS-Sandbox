@@ -64,6 +64,7 @@ public class NetworkManager : MonoBehaviour {
         GameObject player = PhotonNetwork.Instantiate(playerControllerPrefab.name, Vector3.zero, Quaternion.identity, 0);
         ((MonoBehaviour)player.GetComponent("MouseLook")).enabled = true;
         ((MonoBehaviour)player.GetComponent("PlayerController")).enabled = true;
+        player.transform.FindChild("Main Camera").gameObject.SetActive(true);
     }
 
     const int maxChatMessages = 7;
