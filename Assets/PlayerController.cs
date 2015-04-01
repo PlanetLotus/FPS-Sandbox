@@ -21,6 +21,23 @@ public class PlayerController : MonoBehaviour {
         } else {
             netChar.IsJumping = false;
         }
+
+        AdjustAimAngle();
+    }
+
+    private void AdjustAimAngle() {
+        Camera camera = this.GetComponentInChildren<Camera>();
+
+        float aimAngle = 0;
+
+        if (camera.transform.rotation.eulerAngles.x <= 90f) {
+            // We're looking down
+            aimAngle = -camera.transform.rotation.eulerAngles.x;
+        } else {
+            aimAngle = 360 - camera.transform.rotation.eulerAngles.x;
+        }
+
+        netChar.AimAngle = aimAngle;
     }
 
     NetworkCharacter netChar;
