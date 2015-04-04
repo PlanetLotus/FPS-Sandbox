@@ -65,6 +65,7 @@ public class NetworkManager : MonoBehaviour {
         ((MonoBehaviour)player.GetComponent("MouseLook")).enabled = true;
         ((MonoBehaviour)player.GetComponent("PlayerController")).enabled = true;
         player.transform.FindChild("Main Camera").gameObject.SetActive(true);
+        Cursor.visible = false;
     }
 
     const int maxChatMessages = 7;
