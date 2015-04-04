@@ -1,12 +1,16 @@
 fileFormatVersion: 2
 guid: 1e3bfaa4c8080a84ab11b92c542c021d
+timeCreated: 1428180143
+licenseType: Free
 SubstanceImporter:
   serializedVersion: 5
   materialInstances:
-  - serializedVersion: 12
+  - serializedVersion: 15
     name: Electric_Liquid
     prototypeName: Electric_Liquid
     shader: {fileID: 4, guid: 0000000000000000f000000000000000, type: 0}
+    shaderKeywords: 
+    renderQueue: -1
     inputs:
     - name: $time
       value:
@@ -24,7 +28,7 @@ SubstanceImporter:
         texture: {instanceID: 0}
     - name: $randomseed
       value:
-        scalar[0]: 0
+        scalar[0]: 8160
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
@@ -107,7 +111,7 @@ SubstanceImporter:
             name: _MainTex
           second:
             texture: {instanceID: 0}
-            scale: {x: 1, y: 1}
+            scale: {x: 2, y: 2}
             offset: {x: 0, y: 0}
         data:
           first:
@@ -150,3 +154,5 @@ SubstanceImporter:
       loadingBehavior: 1
   deletedPrototypes: []
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 
