@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class NetworkManager : MonoBehaviour {
+    public GameObject StandbyCamera;
+    public float RespawnTimer = 0f;
     public List<string> ChatMessages;
     public bool IsOfflineMode;
     public GameObject playerControllerPrefab;
@@ -33,6 +35,13 @@ public class NetworkManager : MonoBehaviour {
     }
 
     void Update() {
+        if (RespawnTimer > 0) {
+            RespawnTimer -= Time.deltaTime;
+
+            if (RespawnTimer <= 0) {
+                SpawnPlayer();
+            }
+        }
     }
 
     void Connect() {
@@ -64,6 +73,7 @@ public class NetworkManager : MonoBehaviour {
         GameObject player = PhotonNetwork.Instantiate(playerControllerPrefab.name, Vector3.zero, Quaternion.identity, 0);
         ((MonoBehaviour)player.GetComponent("MouseLook")).enabled = true;
         ((MonoBehaviour)player.GetComponent("PlayerController")).enabled = true;
+        StandbyCamera.SetActive(false);
         player.transform.FindChild("Main Camera").gameObject.SetActive(true);
         Cursor.visible = false;
     }

@@ -19,12 +19,34 @@ public class Health : MonoBehaviour {
         currentHitPoints = MaxHitPoints;
     }
 
+    private void OnGUI() {
+        if (GetComponent<PhotonView>().isMine) {
+            if (GUI.Button(new Rect(Screen.width - 100, 0, 100, 40), "Suicide")) {
+                Die();
+            }
+        }
+    }
+
     void Update() {
 
     }
 
     void Die() {
         Debug.Log("DETH");
+
+        PhotonView photonView = GetComponent<PhotonView>();
+
+        if (photonView.instantiationId == 0) {
+            Destroy(gameObject);
+        } else {
+            if (photonView.isMine) {
+                NetworkManager nm = GameObject.FindObjectOfType<NetworkManager>();
+                nm.StandbyCamera.SetActive(true);
+                nm.RespawnTimer = 3f;
+
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
     }
 
     int currentHitPoints;
